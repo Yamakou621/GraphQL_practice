@@ -1,0 +1,15 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user-pass
+      MYSQL_ROOT_PASSWORD: root
+      TZ: Asia/Tokyo
+    ports:
+      - 3333:3306
+    volumes:
+      - db-store:/var/lib/mysql
+volumes:
+  db-store:

@@ -1,0 +1,67 @@
+流れ一覧
+１．# 既にインストールしている場合はスキップして大丈夫です。
+    npm install -g @nestjs/cli
+２．# プロジェクトの作成
+    nest new project-name (今回はhello-prismaという名称で作成)
+
+３．データベースのセットアップ
+    今回はDockerのコンテナ内のmysqlを使用する
+    １．docker-compose.ymlを作成
+    2. docker-compose up -d コンテナ起動
+
+４．Prismaのセットアップ
+    1. npm i nestjs-prisma prisma--save-dev @prisma/client 
+    2. npx prisma init 　prismaファイルの作成＆初期設定 　
+    3.　AppModuleにPrismaModuleを追加
+
+5. データテーブルの作成
+    1. prisma/schema.prismaにデータベースのテーブルを定義
+    2. npx prisma migrate dev --name init 
+     →schema.prismaの内容をDBに反映。マイグレーションファイルを作成
+    3. npx prisma generate
+
+
+以下に記事の各ステップを詳しく説明します。
+
+### 1. 開発環境構築
+- **VS CodeのRemote-Containers拡張**を使用して、Docker上に開発環境を構築する。
+- 必要なDockerファイルと設定ファイルを準備し、コンテナ内で開発を行う。
+
+### 2. Nest CLIのインストールとプロジェクト作成
+- **Nest CLI**をインストールし、`nest new`コマンドで新しいNestJSプロジェクトを作成する。
+- 必要な依存パッケージもインストールされる。
+
+### 3. Prismaのインストールと初期設定
+- **Prisma**をインストールし、Prismaの設定ファイルを作成する。
+- `npx prisma init`コマンドを使用して、Prismaの初期設定を行う。
+
+### 4. GraphQLのパッケージインストール
+- **GraphQL**関連のパッケージをインストールし、GraphQLModuleをプロジェクトに設定する。
+- Apollo Serverの設定も行う。
+
+### 5. ValidationPipeの設定
+- **ValidationPipe**をグローバルに適用し、データのバリデーションを自動的に行うように設定する。
+
+### 6. prisma-nestjs-graphqlのインストール
+- **prisma-nestjs-graphql**をインストールし、PrismaのスキーマファイルからObject TypeやInput Typeを自動生成する。
+
+### 7. Userモデルの定義
+- **Userモデル**をPrismaのスキーマファイルに追加し、必要なフィールド（例：id, email, passwordなど）を定義する。
+
+### 8. Prismaクライアントの生成
+- `npx prisma generate`コマンドを使用してPrismaクライアントを生成し、Prismaサービスを作成する。
+
+### 9. マイグレーションの実行
+- `npx prisma migrate dev`コマンドを実行して、データベースマイグレーションを行う。
+- Prismaのスキーマに基づいてデータベースのテーブルが作成される。
+
+### 10. bcryptのインストール
+- **bcrypt**をインストールし、ユーザーのパスワードをハッシュ化するための関数を作成する。
+
+### 11. Users Module、Service、Resolverの作成
+- **Users Module、Service、Resolver**を生成し、ユーザーの登録や認証に関するビジネスロジックを実装する。
+- GraphQLのリゾルバーを設定して、ユーザー関連のクエリやミューテーションを処理する。
+
+### 12. User登録の動作確認
+- **GraphQL playground**を使用して、ユーザー登録の動作を確認する。
+- GraphQLクエリを作成し、ユーザーの登録や認証が正しく機能することを検証する。

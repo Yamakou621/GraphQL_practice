@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+ generator nestgraphql {
+   provider = "node node_modules/prisma-nestjs-graphql"  //コード生成ライブラリ
+   output = "../src/@generated/prisma-nestjs-graphql" //出力先のディレクトリ
+   fields_Validator_from = "class-validator" //バリデーションライブラリ
+   fields_Validator_input = true //入力データにバリデーション
+   decorate_1_type        = "CreateOne*Args"  //デコレーターの型
+   decorate_1_field       = data //デコレーターを付与するフィールド
+   decorate_1_name        = ValidateNested //デコレーターの名前
+   decorate_1_from        = "class-validator" //デコレーターのライブラリ
+   decorate_1_arguments   = "[]" //デコレーターの引数
+   decorate_2_type        = "CreateOne*Args" //デコレーターの型
+   decorate_2_field       = data //デコレーターを付与するフィールド
+   decorate_2_from        = "class-transformer" //デコレーターのライブラリ
+   decorate_2_arguments   = "['() => {propertyType.0}']" //デコレーターの引数
+   decorate_2_name        = Type //デコレーターの名前
+ }
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  /// @Field(() => ID)
+  id          Int       @id @default(autoincrement())
+  /// @Validator.@IsEmail()
+  email       String    @unique
+  /// @Validator.IsNotEmpty()
+  name        String
+  /// @HideField()
+  /// @Validator.MinLength(8)
+  password    String
+  /// @HideField({ input: true, output: true })
+  hashedRefreshToken String?
+  createdAt DateTime @default(now())
+  /// @HideField({ input: true, output: true })
+  updatedAt DateTime @updatedAt
+  posts       Post[]
+}
+
+model Post {
+  id        Int      @default(autoincrement()) @id
+  title     String
+  content   String?
+  published Boolean? @default(false)
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+}
