@@ -6,14 +6,17 @@ interface NavButtonProps {
 }
 
 const NavButton: React.FC<NavButtonProps> = ({ page }) => {
-    const handleCloseNavMenu = () => {
-        // ナビゲーションメニューを閉じるロジックをここに追加
+    const handleNavButtonClick = () => {
+        if (page === 'Home') {
+            window.location.href = 'http://localhost:5173';
+        }
+        // 他のページのリダイレクトをここに追加できます
     };
 
     return (
         <Button
             key={page}
-            onClick={handleCloseNavMenu}
+            onClick={handleNavButtonClick}
             sx={{ my: 2, color: 'white', display: 'block' }}
         >
             {page}
