@@ -8,7 +8,7 @@ interface NavButtonProps {
 const NavButton: React.FC<NavButtonProps> = ({ page }) => {
     const handleNavButtonClick = () => {
         if (page === 'Home') {
-            window.location.href = 'http://localhost:5173';
+            window.location.href = 'http://localhost:5173/home';
         }
         // 他のページのリダイレクトをここに追加できます
     };

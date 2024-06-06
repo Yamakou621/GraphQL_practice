@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Auth/Auth';
+import LoginForm from './LoginForm';
 
 const LOGIN_USER = gql`
   mutation Login($loginUserInput: LoginUserInput!) {
@@ -15,13 +18,39 @@ const LOGIN_USER = gql`
   }
 `;
 
-const Login = () => {
+const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [login] = useMutation(LOGIN_USER);
+  const navigate = useNavigate();
+  const { login: loginUser } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const validate = () => {
+    let isValid = true;
+    if (!email) {
+      setEmailError('メールアドレスは必須です');
+      isValid = false;
+    } else {
+      setEmailError('');
+    }
+
+    if (!password) {
+      setPasswordError('パスワードは必須です');
+      isValid = false;
+    } else {
+      setPasswordError('');
+    }
+
+    return isValid;
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!validate()) {
+      return;
+    }
     try {
       const { data } = await login({
         variables: {
@@ -29,17 +58,23 @@ const Login = () => {
         }
       });
       console.log('User logged in:', data);
+      loginUser();
+      navigate('/home');
     } catch (error) {
       console.error('Error logging in:', error.message);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-      <button type="submit">Login</button>
-    </form>
+    <LoginForm
+      email={email}
+      setEmail={setEmail}
+      password={password}
+      setPassword={setPassword}
+      handleSubmit={handleSubmit}
+      emailError={emailError}
+      passwordError={passwordError}
+    />
   );
 };
 

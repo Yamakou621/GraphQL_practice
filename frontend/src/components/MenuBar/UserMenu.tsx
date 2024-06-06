@@ -7,13 +7,14 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { useAuth } from '../Auth/Auth';
 
 const loggedInSettings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const loggedOutSettings = ['Login', 'Sign Up'];
 
 const UserMenu: React.FC = () => {
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false); // 仮の認証状態
+    const { isLoggedIn, login, logout } = useAuth();
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
@@ -25,11 +26,11 @@ const UserMenu: React.FC = () => {
 
     const handleMenuItemClick = (setting: string) => {
         if (setting === 'Logout') {
-            setIsLoggedIn(false); // ログアウト処理（例）
+            logout();
         } else if (setting === 'Login') {
             window.location.href = 'http://localhost:5173/login';
         } else if (setting === 'Sign Up') {
-            window.location.href = 'http://localhost:5173/create';
+            window.location.href = 'http://localhost:5173/signup';
         }
         handleCloseUserMenu();
     };

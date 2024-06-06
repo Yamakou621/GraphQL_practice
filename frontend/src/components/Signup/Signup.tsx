@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Auth/Auth';
+import SignupForm from './SignupForm';
 
 const CREATE_USER = gql`
   mutation CreateUser($data: UserCreateInput!) {
@@ -11,14 +14,48 @@ const CREATE_USER = gql`
   }
 `;
 
-const Register = () => {
+const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [usernameError, setUsernameError] = useState('');
   const [register] = useMutation(CREATE_USER);
+  const navigate = useNavigate();
+  const { login: loginUser } = useAuth();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const validate = () => {
+    let isValid = true;
+    if (!email) {
+      setEmailError('メールアドレスは必須です');
+      isValid = false;
+    } else {
+      setEmailError('');
+    }
+
+    if (!password) {
+      setPasswordError('パスワードは必須です');
+      isValid = false;
+    } else {
+      setPasswordError('');
+    }
+
+    if (!username) {
+      setUsernameError('ユーザーネームは必須です');
+      isValid = false;
+    } else {
+      setUsernameError('');
+    }
+
+    return isValid;
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!validate()) {
+      return;
+    }
     try {
       const { data } = await register({
         variables: {
@@ -26,19 +63,27 @@ const Register = () => {
         }
       });
       console.log('User registered:', data);
+      loginUser();
+      navigate('/home');
     } catch (error) {
-      console.error('Error registering user:', error.message, error.graphQLErrors, error.networkError?.result?.errors || error);
+      console.error('Error registering user:', error.message);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" required />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" required />
-      <button type="submit">Register</button>
-    </form>
+    <SignupForm
+      email={email}
+      setEmail={setEmail}
+      password={password}
+      setPassword={setPassword}
+      username={username}
+      setUsername={setUsername}
+      handleSubmit={handleSubmit}
+      emailError={emailError}
+      passwordError={passwordError}
+      usernameError={usernameError}
+    />
   );
 };
 
-export default Register;
+export default Signup;
