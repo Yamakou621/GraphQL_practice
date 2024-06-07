@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../Auth/Auth';
+import { useAuth } from '../Auth/useAuth';
 import SignupForm from './SignupForm';
 
 const CREATE_USER = gql`

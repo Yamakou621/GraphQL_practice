@@ -2,12 +2,13 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
-import AdbIcon from '@mui/icons-material/Adb';
 import Typography from '@mui/material/Typography';
 import AppBarMenu from './AppBarMenu';
 import UserMenu from './UserMenu';
 import NavButton from './NavButton';
-import Logo from "../../assets/卓越会ロゴ.jpg"
+// import Logo from "../../assets/卓越会ロゴ.jpg"
+// import AdbIcon from '@mui/icons-material/Adb';
+
 
 const pages = ['Home', 'Topic', 'About us'];
 
@@ -22,7 +23,7 @@ function ResponsiveAppBar() {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="#app-bar-with-responsive-menu"
+                        href="localhost:5173/home"
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
@@ -44,7 +45,7 @@ function ResponsiveAppBar() {
                         variant="h5"
                         noWrap
                         component="a"
-                        href="#app-bar-with-responsive-menu"
+                        href="localhost:5173/home"
                         sx={{
                             mr: 2,
                             display: { xs: 'flex', md: 'none' },

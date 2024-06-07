@@ -1,16 +1,25 @@
 import React from 'react';
 import Button from '@mui/material/Button';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../Auth/useAuth';
 
 interface NavButtonProps {
     page: string;
 }
 
 const NavButton: React.FC<NavButtonProps> = ({ page }) => {
+    const navigate = useNavigate();
+    const { isLoggedIn } = useAuth();
+
     const handleNavButtonClick = () => {
         if (page === 'Home') {
-            window.location.href = 'http://localhost:5173/home';
+            if (isLoggedIn) {
+                navigate('/home');
+            } else {
+                navigate('/login');
+            }
         }
-        // 他のページのリダイレクトをここに追加できます
+        // 他のページのリダイレクトを追加
     };
 
     return (

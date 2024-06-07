@@ -7,14 +7,14 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { useAuth } from '../Auth/Auth';
+import { useAuth } from '../Auth/useAuth';
 
 const loggedInSettings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const loggedOutSettings = ['Login', 'Sign Up'];
 
 const UserMenu: React.FC = () => {
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    const { isLoggedIn, login, logout } = useAuth();
+    const { isLoggedIn, logout } = useAuth();
 
     const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElUser(event.currentTarget);
